@@ -34,4 +34,5 @@ def rotateImg():
     rotated = cv2.warpAffine(image, M, (w, h)) # rotate img 
     cv2.imwrite(f'img/{nameNewImg}', rotated)
 
-rotateImg()
+
+
