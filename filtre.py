@@ -8,7 +8,6 @@ import imutils
 import numpy as np
 import os
 
-
 '''
 lienImage : variable contenant le lien vers l'iame à modifier
 On enregistre l'image dans la variable img en appliquant le filtre de niveau de gris, on l'affiche et on l'enregistre
@@ -31,8 +30,6 @@ def filterImgBTW():
     img = cv2.imread(lienImage, cv2.IMREAD_GRAYSCALE)
     cv2.imwrite(f'img/{nameNewImg}', img)
 
-   
- 
 '''
 Fonction pour flouter l'image donnée
 On enregistre l'image dans la variable img en appliquant le filtre de niveau de floutage, et on l'enregistre
@@ -45,9 +42,6 @@ def FilterFlouImg():
     blurred_img = cv2.GaussianBlur(img, (15, 15), 0)
     cv2.imwrite(f'img/{nameNewImg}', blurred_img)
 
-
-
-    
 def rotateImg():
     lienImage = str(input("Entrer le chemin de l'image à pivoter : "))
     degreRotate = int(input("Entrer le nombre de degrés de rotation souhaité : "))
@@ -73,4 +67,24 @@ def redimImg():
     image=cv2.resize(image,dimension, interpolation = cv2.INTER_AREA)
     nameNewImg = str(input("Entrer le nom de votre nouvelle image : "))
     cv2.imwrite(f'img/{nameNewImg}', image)
-  
+ 
+
+def writeImg():
+    lienImage = str(input("Entrer le chemin de l'image : "))
+    TxtImage = str(input("Entrer le texte de l'image : "))
+    nameNewImg = str(input("Entrer le nom de votre nouvelle image : "))
+
+    image = cv2.imread(lienImage)
+
+    ## proprietie du texte sur l'image
+    position = (10, 50)
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    fontScale = 1
+    fontColor = (255, 255, 0)
+    thickness = 2
+
+    #on ecrit le texte sur l'image avec toute les proprietés
+    writed = cv2.putText(image, TxtImage, position, font, fontScale, fontColor, thickness)
+
+    cv2.imwrite(f'img/{nameNewImg}', writed)
+
