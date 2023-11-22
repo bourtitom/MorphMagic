@@ -6,6 +6,7 @@ importation des bibliothèque opencv et matplotlib
 import cv2 
 import imutils
 import numpy as np
+import os
 
 
 '''
@@ -29,6 +30,23 @@ def filterImgBTW():
 
     img = cv2.imread(lienImage, cv2.IMREAD_GRAYSCALE)
     cv2.imwrite(f'img/{nameNewImg}', img)
+
+   
+ 
+'''
+Fonction pour flouter l'image donnée
+On enregistre l'image dans la variable img en appliquant le filtre de niveau de floutage, et on l'enregistre
+'''
+def FilterFlouImg():
+    lienImage = str(input("Entrez le lien de l'image à flouter : "))
+    nameNewImg = str(input("Entrez le nom de votre nouvelle image : "))
+
+    img = cv2.imread(lienImage)
+    blurred_img = cv2.GaussianBlur(img, (15, 15), 0)
+    cv2.imwrite(f'img/{nameNewImg}', blurred_img)
+
+
+
     
 def rotateImg():
     lienImage = str(input("Entrer le chemin de l'image à pivoter : "))
@@ -44,3 +62,4 @@ def rotateImg():
 
     rotated = cv2.warpAffine(image, M, (w, h)) # rotate img 
     cv2.imwrite(f'img/{nameNewImg}', rotated)
+
