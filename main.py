@@ -3,6 +3,25 @@ from log import *
 from CLI import * 
 import sys 
 import argparse
+import os
+
+def charger_images_dossier(chemin_dossier):
+    liste_images = []
+
+    # Parcourir tous les fichiers du dossier
+    for nom_fichier in os.listdir(chemin_dossier):
+        chemin_complet = os.path.join(chemin_dossier, nom_fichier)
+
+        # Vérifier si le fichier est une image
+        if os.path.isfile(chemin_complet) and any(chemin_complet.lower().endswith(ext) for ext in ['.png', '.jpg', '.jpeg']):
+            # Charger l'image avec OpenCV
+            image = cv2.imread(chemin_complet)
+
+            # Ajouter l'image à la liste
+            liste_images.append(image)
+
+    return liste_images
+
 def afficher_info_filtres():
     infos = {
         'btw': 'Convertit en noir et blanc',
@@ -23,38 +42,56 @@ def main():
     parser.add_argument('--filters', '-f', type=str, help='spécifié les filtres sur l\'image')
     parser.add_argument('--input_folder', '-i', type=str, help='Input folder pour prendre l\'image a modifier')
     parser.add_argument('--output_folder', '-o', type=str, help='Output folder pour sauvegarder l\'image')
-
+    
     args = parser.parse_args()
     if args.info:
         afficher_info_filtres()
     elif args.filters and args.input_folder and args.output_folder:
+        listeImg = charger_images_dossier(args.input_folder)
+        nombreImg = len(listeImg)
         filters = args.filters.split('&')
         input_folder = args.input_folder
         output_folder = args.output_folder
 
         for filter_name in filters:
-            if filter_name == 'btw':
-                filterImgBTW(input_folder, output_folder)
-            elif filter_name == 'dilate':
-                filtreDilate(input_folder, output_folder)
-            elif filter_name == 'flou':
-                FilterFlouImg(input_folder, output_folder)
+            if 'btw' in filter_name: 
+                for i in range (nombreImg):
+                    listeImg[i] = filterImgBTW(listeImg[i])
+                    
+            if 'dilate' in filter_name:
+                for i in range (nombreImg):
+                    listeImg[i] = filtreDilate(listeImg[i])
+                    
+            if 'flou' in filter_name:
+                for i in range (nombreImg):
+                    listeImg[i] = FilterFlouImg(listeImg[i])
 
-            elif filter_name.startswith('rotate:'):
+            if filter_name.startswith('rotate:'):
                 degree = int(filter_name.split(':')[1])
-                rotateImg(input_folder, output_folder, degree)
-            elif filter_name.startswith('redim:'):
+                for i in range (nombreImg):
+                   listeImg[i] = rotateImg(listeImg[i], degree)
+                
+            if filter_name.startswith('redim:'):
                 size = int(filter_name.split(':')[1])
-                rotateImg(input_folder, output_folder, size)
-            elif filter_name.startswith('rwite:'):
+                for i in range (nombreImg):
+                    listeImg[i] = redimImg(listeImg[i], size)
+                
+            if filter_name.startswith('rwite:'):
                 text = str(filter_name.split(':')[1])
-                writeImg(input_folder, output_folder, text)            
-            else:
-                print(f"Filtre '{filter_name}' non reconnu.")
-
-        print("Filtres appliqués avec succès aux images.")
-    else:
-        print("Utilisation: image-filter --filters <filters> --input_folder <input_folder> --output_folder <output_folder>")
+                for i in range (nombreImg):
+                    listeImg[i] = writeImg(listeImg[i], text)
+                
+        for i in range (nombreImg):
+            cv2.imshow("fenetre",listeImg[i])
+            cv2.waitKey(0)
+            nb = str(i)
+            cv2.imwrite(f'{output_folder}/imageFiltre{nb}.png', listeImg[i])
+            #else:
+                #print(f"Filtre '{filter_name}' non reconnu.")
+            #cv2.imwrite(f'img/{output_folder}', img)
+        #print("Filtres appliqués avec succès aux images.")
+    #else:
+        #print("Utilisation: image-filter --filters <filters> --input_folder <input_folder> --output_folder <output_folder>")
 
 if __name__ == "__main__":
     main()
