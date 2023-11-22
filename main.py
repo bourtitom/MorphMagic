@@ -3,16 +3,31 @@ from log import *
 from CLI import * 
 import sys 
 import argparse
+def afficher_info_filtres():
+    infos = {
+        'btw': 'Convertit en noir et blanc',
+        'dilate': 'Dilate l\'image',
+        'flou': 'Applique un flou à l\'image',
+        'rotate:<degré>': 'Fait pivoter l\'image selon le degré spécifié',
+        'redim:<taille>': 'Redimensionne l\'image selon la taille spécifiée',
+        'rwite:<texte>': 'Écrit du texte sur l\'image'
+    }
+
+    print("Liste de tous les filtres disponibles :")
+    for key, value in infos.items():
+        print(f"{key:<20} : {value}")
 
 def main():
-    parser = argparse.ArgumentParser(description='Apply filters to images')
-    parser.add_argument('--filters', '-f', type=str, help='Specify filters to apply to images')
-    parser.add_argument('--input_folder', '-i', type=str, help='Input folder containing initial images')
-    parser.add_argument('--output_folder', '-o', type=str, help='Output folder to save modified images')
+    parser = argparse.ArgumentParser(description='applique les filtres sur des images')
+    parser.add_argument('--info', action='store_true', help='Affiche la liste de tous les filtres')
+    parser.add_argument('--filters', '-f', type=str, help='spécifié les filtres sur l\'image')
+    parser.add_argument('--input_folder', '-i', type=str, help='Input folder pour prendre l\'image a modifier')
+    parser.add_argument('--output_folder', '-o', type=str, help='Output folder pour sauvegarder l\'image')
 
     args = parser.parse_args()
-
-    if args.filters and args.input_folder and args.output_folder:
+    if args.info:
+        afficher_info_filtres()
+    elif args.filters and args.input_folder and args.output_folder:
         filters = args.filters.split('&')
         input_folder = args.input_folder
         output_folder = args.output_folder
