@@ -57,6 +57,17 @@ def rotateImg():
     rotated = cv2.warpAffine(image, M, (w, h)) # rotate img 
     cv2.imwrite(f'img/{nameNewImg}', rotated)
 
+def redimImg():
+    lienImage = str(input("Entrer le chemin de l'image à redimensioner : "))
+    newSize = float(input("entrer le facteur de redimensionnement de l'image :"))
+    image = cv2.imread(lienImage)
+    largeur = int(image.shape[1] * newSize / 100)
+    hauteur = int(image.shape[0] * newSize / 100)
+    dimension = (largeur, hauteur)
+    image=cv2.resize(image,dimension, interpolation = cv2.INTER_AREA)
+    nameNewImg = str(input("Entrer le nom de votre nouvelle image : "))
+    cv2.imwrite(f'img/{nameNewImg}', image)
+ 
 
 def writeImg():
     lienImage = str(input("Entrer le chemin de l'image : "))
