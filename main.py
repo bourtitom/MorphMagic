@@ -43,7 +43,6 @@ def main():
     parser.add_argument('--filters', '-f', type=str, help='spécifié les filtres sur l\'image')
     parser.add_argument('--input_folder', '-i', type=str, help='Input folder pour prendre l\'image a modifier')
     parser.add_argument('--output_folder', '-o', type=str, help='Output folder pour sauvegarder l\'image')
-    
     args = parser.parse_args()
     if args.info:
         afficher_info_filtres()
@@ -72,7 +71,6 @@ def main():
 
             if filter_name.startswith('rotate:')and not filter_name.endswith('rotate:'):
                 degree = int(filter_name.split(':')[1])
-
                 if degree > 0:
                     for i in range (nombreImg):
                         listeImg[i] = rotateImg(listeImg[i], degree)
