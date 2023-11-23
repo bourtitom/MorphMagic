@@ -4,6 +4,7 @@ from CLI import *
 import sys 
 import argparse
 import os
+import log
 
 def charger_images_dossier(chemin_dossier):
     liste_images = []
@@ -57,35 +58,47 @@ def main():
             if 'btw' in filter_name: 
                 for i in range (nombreImg):
                     listeImg[i] = filterImgBTW(listeImg[i])
+                log.log(f'il y a {nombreImg} image qui ont été mise en noir et blanc ')
                     
             if 'dilate' in filter_name:
                 for i in range (nombreImg):
                     listeImg[i] = filtreDilate(listeImg[i])
+                log.log(f'il y a {nombreImg} image qui ont été dilaté ')
                     
             if 'flou' in filter_name:
                 for i in range (nombreImg):
                     listeImg[i] = FilterFlouImg(listeImg[i])
+                log.log(f'il y a {nombreImg} image qui ont été flouté ')
 
             if filter_name.startswith('rotate:'):
                 degree = int(filter_name.split(':')[1])
                 for i in range (nombreImg):
                    listeImg[i] = rotateImg(listeImg[i], degree)
+                log.log(f'il y a {nombreImg} image qui ont fait une rotation ')
                 
             if filter_name.startswith('redim:'):
                 size = int(filter_name.split(':')[1])
                 for i in range (nombreImg):
                     listeImg[i] = redimImg(listeImg[i], size)
+                log.log(f'il y a {nombreImg} image qui ont été redimensioné ')
                 
             if filter_name.startswith('rwite:'):
                 text = str(filter_name.split(':')[1])
                 for i in range (nombreImg):
                     listeImg[i] = writeImg(listeImg[i], text)
+                log.log(f'il y a {nombreImg} image sur lequel on a écrit ')
+            
+            if  'aqua' in filter_name:
+                for i in range (nombreImg):
+                    listeImg[i] = aquaImg(listeImg[i])
+                log.log(f'il y a {nombreImg} image sur lequel on a apliqué le filtre aquarelle ')
                 
         for i in range (nombreImg):
             cv2.imshow("fenetre",listeImg[i])
             cv2.waitKey(0)
             nb = str(i)
             cv2.imwrite(f'{output_folder}/imageFiltre{nb}.png', listeImg[i])
+
             #else:
                 #print(f"Filtre '{filter_name}' non reconnu.")
             #cv2.imwrite(f'img/{output_folder}', img)
