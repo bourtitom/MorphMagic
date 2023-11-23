@@ -4,9 +4,9 @@ importation des bibliothèque opencv et matplotlib
 '''
 
 import cv2 
-import imutils
 import numpy as np
 import os
+from PIL import Image
 
 '''
 lienImage : variable contenant le lien vers l'iame à modifier
@@ -70,3 +70,23 @@ def writeImg(image,txt):
 def aquaImg(image):
     aqua = cv2.stylization(image, sigma_s=60, sigma_r=0.6)
     return aqua
+  
+def gifFromImg(folder):
+    images = []
+    
+    # on cherche tous les files dans le dossier qui a été listé 
+    for file_name in os.listdir(folder):
+        file_path = os.path.join(folder, file_name)
+        
+        # on check si c'est bien une image
+        if file_path.lower().endswith(('.png', '.jpg', '.jpeg', '.gif')):
+            img = Image.open(file_path)
+            images.append(img)
+
+    # Vérification s'il y a des images à convertir en GIF
+    if images:
+        images[0].save(f'{folder}/test.gif', format='GIF', append_images=images[1:], save_all=True, duration=500, loop=0)
+        print(f"GIF créé : {folder}")
+    else:
+        print("Aucune image trouvée dans le dossier.")
+
