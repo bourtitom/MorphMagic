@@ -3,7 +3,6 @@ from log import *
 from CLI import * 
 import sys 
 import argparse
-import os
 
 def charger_images_dossier(chemin_dossier):
     liste_images = []
@@ -57,7 +56,7 @@ def main():
             if 'btw' in filter_name: 
                 for i in range (nombreImg):
                     listeImg[i] = filterImgBTW(listeImg[i])
-                    
+                
             if 'dilate' in filter_name:
                 for i in range (nombreImg):
                     listeImg[i] = filtreDilate(listeImg[i])
@@ -66,32 +65,33 @@ def main():
                 for i in range (nombreImg):
                     listeImg[i] = FilterFlouImg(listeImg[i])
 
-            if filter_name.startswith('rotate:'):
+            if filter_name.startswith('rotate:')and not filter_name.endswith('rotate:'): # test pour vérifier si l'utilisateur a rentrer la fonction rotate et n'a pas oublié le paramètre en entré
                 degree = int(filter_name.split(':')[1])
-                for i in range (nombreImg):
-                   listeImg[i] = rotateImg(listeImg[i], degree)
+                if degree > 0 and degree < 360: # test pour vérifier si le degré de rotation est supérieur à 0 et inférieur a 360
+                    for i in range (nombreImg):
+                       listeImg[i] = rotateImg(listeImg[i], degree)
                 
-            if filter_name.startswith('redim:'):
+            if filter_name.startswith('redim:') and not filter_name.endswith('redim:'):
                 size = int(filter_name.split(':')[1])
-                for i in range (nombreImg):
-                    listeImg[i] = redimImg(listeImg[i], size)
+                if size > 0: # test pour vérifier si la nouvelle taille de l'image est supérieur a 0, pour éviter les erreurs
+                    for i in range (nombreImg):
+                        listeImg[i] = redimImg(listeImg[i], size)
                 
-            if filter_name.startswith('rwite:'):
+            if filter_name.startswith('rwrite:')and not filter_name.endswith('rwrite:'): 
                 text = str(filter_name.split(':')[1])
                 for i in range (nombreImg):
                     listeImg[i] = writeImg(listeImg[i], text)
+                    cv2.imshow("fenetre",listeImg[i])
+                    cv2.waitKey(0)
                 
         for i in range (nombreImg):
             cv2.imshow("fenetre",listeImg[i])
             cv2.waitKey(0)
             nb = str(i)
-            cv2.imwrite(f'{output_folder}/imageFiltre{nb}.png', listeImg[i])
-            #else:
-                #print(f"Filtre '{filter_name}' non reconnu.")
-            #cv2.imwrite(f'img/{output_folder}', img)
-        #print("Filtres appliqués avec succès aux images.")
-    #else:
-        #print("Utilisation: image-filter --filters <filters> --input_folder <input_folder> --output_folder <output_folder>")
+            try:
+                cv2.imwrite(f'{output_folder}/imageFiltre{nb}.png', listeImg[i])
+            except:
+                print("Nous n'avons pas réussi à ajouter les images dans le dossier correspondant")
 
 if __name__ == "__main__":
     main()

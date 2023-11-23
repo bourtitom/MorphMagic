@@ -48,8 +48,8 @@ def redimImg(image, size):
     largeur = int(image.shape[1] * size / 100)
     hauteur = int(image.shape[0] * size / 100)
     dimension = (largeur, hauteur)
-    image=cv2.resize(image,dimension, interpolation = cv2.INTER_AREA)
-    return image
+    image2=cv2.resize(image,dimension, interpolation = cv2.INTER_AREA)
+    return image2
  
 
 def writeImg(image,txt):
