@@ -88,7 +88,8 @@ def main():
             cv2.imwrite(f'{output_folder}/imageFiltre{nb}.png', listeImg[i])
             
         if 'gif' in filter_name: 
-                    listgif = gifFromImg(output_folder,output_folder)
+            listgif = gifFromImg(
+                output_folder)
             #else:
                 #print(f"Filtre '{filter_name}' non reconnu.")
             #cv2.imwrite(f'img/{output_folder}', img)

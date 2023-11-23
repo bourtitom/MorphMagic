@@ -66,12 +66,12 @@ def writeImg(image,txt):
 
     return writed
 
-def gifFromImg(input_folder, output_gif):
+def gifFromImg(folder):
     images = []
     
     # on cherche tous les files dans le dossier qui a été listé 
-    for file_name in os.listdir(input_folder):
-        file_path = os.path.join(input_folder, file_name)
+    for file_name in os.listdir(folder):
+        file_path = os.path.join(folder, file_name)
         
         # on check si c'est bien une image
         if file_path.lower().endswith(('.png', '.jpg', '.jpeg', '.gif')):
@@ -80,7 +80,7 @@ def gifFromImg(input_folder, output_gif):
 
     # Vérification s'il y a des images à convertir en GIF
     if images:
-        images[0].save(f'{output_gif}/test.gif', format='GIF', append_images=images[1:], save_all=True, duration=500, loop=0)
-        print(f"GIF créé : {output_gif}")
+        images[0].save(f'{folder}/test.gif', format='GIF', append_images=images[1:], save_all=True, duration=500, loop=0)
+        print(f"GIF créé : {folder}")
     else:
         print("Aucune image trouvée dans le dossier.")
