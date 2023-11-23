@@ -80,7 +80,7 @@ def gifFromImg(input_folder, output_gif):
 
     # Vérification s'il y a des images à convertir en GIF
     if images:
-        images[0].save(output_gif, format='GIF', append_images=images[1:], save_all=True, duration=500, loop=0)
+        images[0].save(f'{output_gif}/test.gif', format='GIF', append_images=images[1:], save_all=True, duration=500, loop=0)
         print(f"GIF créé : {output_gif}")
     else:
         print("Aucune image trouvée dans le dossier.")

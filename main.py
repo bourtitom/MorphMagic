@@ -65,8 +65,6 @@ def main():
             if 'flou' in filter_name:
                 for i in range (nombreImg):
                     listeImg[i] = FilterFlouImg(listeImg[i])
-            if 'gif' in filter_name: 
-                    listgif = gifFromImg(input_folder,output_folder)
 
             if filter_name.startswith('rotate:'):
                 degree = int(filter_name.split(':')[1])
@@ -88,6 +86,9 @@ def main():
             cv2.waitKey(0)
             nb = str(i)
             cv2.imwrite(f'{output_folder}/imageFiltre{nb}.png', listeImg[i])
+            
+        if 'gif' in filter_name: 
+                    listgif = gifFromImg(output_folder,output_folder)
             #else:
                 #print(f"Filtre '{filter_name}' non reconnu.")
             #cv2.imwrite(f'img/{output_folder}', img)
