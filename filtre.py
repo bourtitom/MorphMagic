@@ -68,6 +68,7 @@ def writeImg(image,txt):
 
 
 def aquaImg(image):
+    #on lui aplique une stylisation qui permet de changer les couleurs et de faire de l'aquarelle sur nos images
     aqua = cv2.stylization(image, sigma_s=60, sigma_r=0.6)
     return aqua
   
