@@ -1,0 +1,6 @@
+2023/11/23 09:41:40 - il y a 4 qui ont été mise en noir et blanc 
+2023/11/23 09:43:19 - il y a 4 image qui ont été mise en noir et blanc 
+2023/11/23 09:43:19 - il y a 4 image qui ont été dilaté 
+2023/11/23 09:50:09 - il y a 4 image qui ont été mise en noir et blanc 
+2023/11/23 09:53:03 - il y a 4 image sur lequel on a écrit 
+2023/11/23 10:06:12 - il y a 4 image sur lequel on a apliqué le filtre aquarelle 

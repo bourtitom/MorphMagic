@@ -66,6 +66,11 @@ def writeImg(image,txt):
 
     return writed
 
+
+def aquaImg(image):
+    aqua = cv2.stylization(image, sigma_s=60, sigma_r=0.6)
+    return aqua
+  
 def gifFromImg(folder):
     images = []
     
@@ -84,3 +89,4 @@ def gifFromImg(folder):
         print(f"GIF créé : {folder}")
     else:
         print("Aucune image trouvée dans le dossier.")
+
