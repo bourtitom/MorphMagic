@@ -55,8 +55,19 @@ def main():
     parser.add_argument('--output_folder', '-o', type=str, help='Output folder pour sauvegarder l\'image')
         
     args = parser.parse_args()
-    if args.info:
+    
+    '''
+    si jamais l'utilisateur rentre info comme commande, il va voir l'ensemble des commandes et ce qu'elles font
+    Sinon, si l'utilisateur remplit tous les champs pour pouvoir appliquer un filtre (les nom des filtres, l'emplacement du dossier source et du dossier receveur)
+    on transforme la chaine de caractère filtres en une liste contenant chacun des chaines de caractère, chacune portant le nom d'un filtre
+    si jamais le filtre correspond, on l'applique
+    Une fois tous les filtres appliqués, on affiches le résultat à l'utilisateur et l'on enregistre les images dans le dossier receveur
+    si jamais l'utilisateur voulait créer un gif, on va se servir des images ainsi créer et les assembles pour faire notre gif
+    '''
+    
+    if args.info: 
         afficher_info_filtres()
+    
     elif args.filters and args.input_folder and args.output_folder:
         listeImg = charger_images_dossier(args.input_folder)
         nombreImg = len(listeImg)
@@ -124,12 +135,6 @@ def main():
                 listgif = gifFromImg(output_folder)
             except:
                 print("le gif n'a pas réussi à être créé")
-            #else:
-                #print(f"Filtre '{filter_name}' non reconnu.")
-            #cv2.imwrite(f'img/{output_folder}', img)
-        #print("Filtres appliqués avec succès aux images.")
-    #else:
-        #print("Utilisation: image-filter --filters <filters> --input_folder <input_folder> --output_folder <output_folder>")
 
 if __name__ == "__main__":
     main()
