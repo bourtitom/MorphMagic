@@ -65,6 +65,8 @@ def main():
             if 'flou' in filter_name:
                 for i in range (nombreImg):
                     listeImg[i] = FilterFlouImg(listeImg[i])
+            if 'gif' in filter_name: 
+                    listgif = gifFromImg(input_folder,output_folder)
 
             if filter_name.startswith('rotate:'):
                 degree = int(filter_name.split(':')[1])
