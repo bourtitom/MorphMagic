@@ -66,17 +66,19 @@ def main():
                 for i in range (nombreImg):
                     listeImg[i] = FilterFlouImg(listeImg[i])
 
-            if filter_name.startswith('rotate:'):
+            if filter_name.startswith('rotate:')and not filter_name.endswith('rotate:'):
                 degree = int(filter_name.split(':')[1])
-                for i in range (nombreImg):
-                   listeImg[i] = rotateImg(listeImg[i], degree)
+                if degree > 0:
+                    for i in range (nombreImg):
+                        listeImg[i] = rotateImg(listeImg[i], degree)
                 
-            if filter_name.startswith('redim:'):
+            if filter_name.startswith('redim:')and not filter_name.endswith('redim:'):
                 size = int(filter_name.split(':')[1])
-                for i in range (nombreImg):
-                    listeImg[i] = redimImg(listeImg[i], size)
+                if size > 0:
+                    for i in range (nombreImg):
+                        listeImg[i] = redimImg(listeImg[i], size)
                 
-            if filter_name.startswith('rwite:'):
+            if filter_name.startswith('rwrite:')and not filter_name.endswith('rwrite:'):
                 text = str(filter_name.split(':')[1])
                 for i in range (nombreImg):
                     listeImg[i] = writeImg(listeImg[i], text)
@@ -85,11 +87,17 @@ def main():
             cv2.imshow("fenetre",listeImg[i])
             cv2.waitKey(0)
             nb = str(i)
-            cv2.imwrite(f'{output_folder}/imageFiltre{nb}.png', listeImg[i])
+            try:
+                cv2.imwrite(f'{output_folder}/imageFiltre{nb}.png', listeImg[i])
+
+            except:
+                print("nous n'avons pas réussi a créer les images que vous souhaitez, le dossier n'existe pas")
             
-        if 'gif' in filter_name: 
-            listgif = gifFromImg(
-                output_folder)
+        if 'gif' in filter_name:
+            try: 
+                listgif = gifFromImg(output_folder)
+            except:
+                print("le gif n'a pas réussi à être créé")
             #else:
                 #print(f"Filtre '{filter_name}' non reconnu.")
             #cv2.imwrite(f'img/{output_folder}', img)
