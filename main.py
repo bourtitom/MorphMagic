@@ -83,18 +83,14 @@ def main():
             if filter_name.startswith('rotate:')and not filter_name.endswith('rotate:'):
                 degree = int(filter_name.split(':')[1])
 
-                for i in range (nombreImg):
-
-              if degree > 0:
+                if degree > 0:
                     for i in range (nombreImg):
                         listeImg[i] = rotateImg(listeImg[i], degree)
-                 log.log(f'il y a {nombreImg} image qui ont fait une rotation ')
+                log.log(f'il y a {nombreImg} image qui ont fait une rotation ')
 
                 
             if filter_name.startswith('redim:')and not filter_name.endswith('redim:'):
                 size = int(filter_name.split(':')[1])
-
-                for i in range (nombreImg):
 
                 if size > 0:
                     for i in range (nombreImg):
