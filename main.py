@@ -24,6 +24,7 @@ def charger_images_dossier(chemin_dossier):
     return liste_images
 
 def afficher_info_filtres():
+    # Dictionnaire contenant les informations sur chaque filtre disponible
     infos = {
         'btw': 'Convertit en noir et blanc',
         'dilate': 'Dilate l\'image',
@@ -33,17 +34,26 @@ def afficher_info_filtres():
         'rwite:<texte>': 'Écrit du texte sur l\'image'
     }
 
+    # Affichage des informations sur chaque filtre
     print("Liste de tous les filtres disponibles :")
     for key, value in infos.items():
         print(f"{key:<20} : {value}")
 
 def main():
     parser = argparse.ArgumentParser(description='applique les filtres sur des images')
+
+    # Argument pour afficher la liste de tous les filtres
     parser.add_argument('--info', action='store_true', help='Affiche la liste de tous les filtres')
+
+    # Argument pour spécifier les filtres à appliquer sur l'image
     parser.add_argument('--filters', '-f', type=str, help='spécifié les filtres sur l\'image')
+
+    # Argument pour spécifier le dossier d'entrée contenant l'image à modifier
     parser.add_argument('--input_folder', '-i', type=str, help='Input folder pour prendre l\'image a modifier')
+
+    # Argument pour spécifier le dossier de sortie pour sauvegarder l'image modifiée
     parser.add_argument('--output_folder', '-o', type=str, help='Output folder pour sauvegarder l\'image')
-    
+        
     args = parser.parse_args()
     if args.info:
         afficher_info_filtres()
