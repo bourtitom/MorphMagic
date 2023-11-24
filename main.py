@@ -31,7 +31,9 @@ def afficher_info_filtres():
         'flou': 'Applique un flou à l\'image',
         'rotate:<degré>': 'Fait pivoter l\'image selon le degré spécifié',
         'redim:<taille>': 'Redimensionne l\'image selon la taille spécifiée',
-        'rwite:<texte>': 'Écrit du texte sur l\'image'
+        'rwite:<texte>': 'Écrit du texte sur l\'image',
+        'aqua': 'Ajoute un filtre aquarelle',
+        'gif': 'Utilise toutes les images que l\'on a modifié pour en faire un gif' 
     }
 
     # Affichage des informations sur chaque filtre
@@ -53,6 +55,8 @@ def main():
 
     # Argument pour spécifier le dossier de sortie pour sauvegarder l'image modifiée
     parser.add_argument('--output_folder', '-o', type=str, help='Output folder pour sauvegarder l\'image')
+    
+    parser.add_argument('--config', '-c',  type = str, help ='pour ajouter les filtres depuis un fichier texte')
         
     args = parser.parse_args()
     
@@ -114,7 +118,7 @@ def main():
                 for i in range (nombreImg):
                     listeImg[i] = writeImg(listeImg[i], text)
                 log.log(f'il y a {nombreImg} image sur lequel on a écrit ')
-            
+             
             if  'aqua' in filter_name:
                 for i in range (nombreImg):
                     listeImg[i] = aquaImg(listeImg[i])
@@ -135,6 +139,84 @@ def main():
                 listgif = gifFromImg(output_folder)
             except:
                 print("le gif n'a pas réussi à être créé")
+                
+    elif args.config:
+        f = open(args.config, "r")
+        ligne = f.readline() # lecture de la première ligne contenant le lien du dossier source des images
+        ligne = ligne.replace("\n", "")
+        
+        ligne2 = f.readline() # lecture de la deuxième ligne contenant le lien du dossier receveur des images
+        ligne2 = ligne2.replace("\n", "")
+        
+        ligne3 = f.readline() #lecture de la troisième ligne contenant l'ensemble des filtres que l'on voudra appliquer à nos images
+        ligne3 = ligne3.replace("\n", "")
+        
+        filters = ligne3.split('&') # ondécoupe notre chaine de caractère en plusieurs autres chaine de caractère lorsque & les sépares
+        listeImg = charger_images_dossier(ligne)
+        nombreImg = len(listeImg)
+        for filter_name in filters:
+            if 'btw' in filter_name: 
+                for i in range (nombreImg):
+                    listeImg[i] = filterImgBTW(listeImg[i])
+                log.log(f'il y a {nombreImg} image qui ont été mise en noir et blanc ')
+                    
+            if 'dilate' in filter_name:
+                for i in range (nombreImg):
+                    listeImg[i] = filtreDilate(listeImg[i])
+                log.log(f'il y a {nombreImg} image qui ont été dilaté ')
+                    
+            if 'flou' in filter_name:
+                for i in range (nombreImg):
+                    listeImg[i] = FilterFlouImg(listeImg[i])
+                log.log(f'il y a {nombreImg} image qui ont été flouté ')
+
+            if filter_name.startswith('rotate:')and not filter_name.endswith('rotate:'):
+                degree = int(filter_name.split(':')[1])
+
+                if degree > 0:
+                    for i in range (nombreImg):
+                        listeImg[i] = rotateImg(listeImg[i], degree)
+                log.log(f'il y a {nombreImg} image qui ont fait une rotation ')
+
+                
+            if filter_name.startswith('redim:')and not filter_name.endswith('redim:'):
+                size = int(filter_name.split(':')[1])
+
+                if size > 0:
+                    for i in range (nombreImg):
+                        listeImg[i] = redimImg(listeImg[i], size)
+                log.log(f'il y a {nombreImg} image qui ont été redimensioné ')
+
+                
+            if filter_name.startswith('rwrite:')and not filter_name.endswith('rwrite:'):
+                text = str(filter_name.split(':')[1])
+                for i in range (nombreImg):
+                    listeImg[i] = writeImg(listeImg[i], text)
+                log.log(f'il y a {nombreImg} image sur lequel on a écrit ')
+             
+            if  'aqua' in filter_name:
+                for i in range (nombreImg):
+                    listeImg[i] = aquaImg(listeImg[i])
+                log.log(f'il y a {nombreImg} image sur lequel on a apliqué le filtre aquarelle ')
+                
+        for i in range (nombreImg):
+            cv2.imshow("fenetre",listeImg[i])
+            cv2.waitKey(0)
+            nb = str(i)
+            try:
+                cv2.imwrite(f'{ligne2}/imageFiltre{nb}.png', listeImg[i])
+
+            except:
+                print("nous n'avons pas réussi a créer les images que vous souhaitez, le dossier n'existe pas")
+            
+        if 'gif' in filter_name:
+            try: 
+                listgif = gifFromImg(ligne2)
+            except:
+                print("le gif n'a pas réussi à être créé")
+    f.close()
+        
+        
 
 if __name__ == "__main__":
     main()
